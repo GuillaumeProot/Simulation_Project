@@ -44,31 +44,11 @@ def poker_test(seq, d, k):
     # for exemple, we got in a package [1, 2, 2, 2, 5, 5]
     # we will have {3 : 1} meaning that there is one package where we got 3 different digits
     digits_count = count(r)
-    r_tab = list(numbers_count.values()) # values of digits_count
+    r_tab = list(digits_count.values()) # values of digits_count
     poker_prob_tab = [poker_case_prob(k, r, d) for r in digits_count]
     # now return a chisquareTest of this
     
     
     
 if __name__=="__main__":
-    d = {'0': 99959,
-         '1': 99758,
-         '2': 100026,
-         '3': 100229,
-         '4': 100230,
-         '5': 100359,
-         '6': 99548,
-         '7': 99800,
-         '8': 99985,
-         '9': 100106}
-
-    t = [99959, 99758, 100026, 100229, 100230, 100359, 99548, 99800, 99985, 100106]
-
-    plt.bar(d.keys(), d.values())
-    
-
-    lines = open("pi.txt", "r").readlines()[1:]
-    str_line = "".join(lines)
-
-
-    # plt.show()
+    print("i'm main")
