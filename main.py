@@ -1,12 +1,17 @@
-from itertools import count
-from operator import mul
-from functools import reduce
-from scipy.special import comb
-import numpy as np
 from collections import Counter
-import math
-import matplotlib.pyplot as plt
+import scipy as sc
+from scipy.stats import chisquare
+import numpy as np
 
+
+
+def chisquare_test(values, probs):
+    """
+    values : [values]
+    probs : values[i] has the probability probs[i] to happend
+    """
+    
+    
 
 def computeStirling(k, r, pred={}):
     """
@@ -38,17 +43,41 @@ def poker_test(seq, d, k):
     while len(seq) > 0:
         # count occurences in a package
         # add the number of different value to r
-        r.append(len(count(seq[:k])))
+        t = seq[:k]
+        l = Counter(t)
+        to_add = len(l)
+        r.append(to_add)
         seq = seq[k:]
     # number_count is the number of time we got X different digits in a package
     # for exemple, we got in a package [1, 2, 2, 2, 5, 5]
     # we will have {3 : 1} meaning that there is one package where we got 3 different digits
-    digits_count = count(r)
+    digits_count = Counter(r)
     r_tab = list(digits_count.values()) # values of digits_count
     poker_prob_tab = [poker_case_prob(k, r, d) for r in digits_count]
     # now return a chisquareTest of this
+    dist, pvalue = chisquare(r_tab, poker_prob_tab)
+    uni = "YES" if pvalue > 0.05 else "NO"
+    print(f"{'Distance':^12} {'pvalue':^12} {'Uniform?':^8} {'Dataset'}")
+    print(f"{dist:12.3f} {pvalue:12.8f} {uni:^8} {r_tab}")
     
-    
-    
+def get_pi_seq():
+    file = open('pi.txt', "r")
+    lines = file.readlines()[1:]
+    clean_lines = [l.strip() for l in lines]
+    str_line = "".join(clean_lines)
+    return [int(x) for x in str_line]
+
+def pi_chisquare_test():
+    """
+    do X² test on the decimals of pi
+    """
+    pi = get_pi_seq()
+    dist, pvalue = chisquare(list(Counter(pi).values()))
+    uni = "YES" if pvalue > 0.05 else "NO"
+    print(f"{'Distance':^12} {'pvalue':^12} {'Uniform?':^8} {'Dataset'}")
+    print(f"{dist:12.3f} {pvalue:12.8f} {uni:^8} no")
+
 if __name__=="__main__":
     print("i'm main")
+    
+    
