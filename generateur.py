@@ -50,8 +50,14 @@ if __name__ == '__main__':
     
     plt.figure()
     plt.hist(gen_numbers_1, color='palegreen', histtype='barstacked')
+    plt.hist(pyth_numbers, color='darkblue', histtype='step')
+    plt.legend({'Premier générateur','Python'}, loc=4)
+    plt.savefig('generator1.png')
+    plt.show()
+
+    plt.figure()
     plt.hist(gen_numbers_3, color='gold', histtype='barstacked')
     plt.hist(pyth_numbers, color='darkblue', histtype='step')
-    plt.legend({'Premier générateur', 'Python'}, loc=4)
-    plt.savefig('generator1.png')
+    plt.legend({'Troisième générateur','Python'}, loc=4)
+    plt.savefig('generator3.png')
     plt.show()

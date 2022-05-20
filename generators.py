@@ -48,9 +48,11 @@ class Generator3:
 
     def random(self):
         digits = []
+
         for _ in range(self.nb_digits):
+            nb_random = int(Generator1(50,6).random() * 100000)
             timing = datetime.datetime.now().microsecond #prend la date en microseconde
-            digit = (timing*424242)%(2**32)
+            digit = (timing*nb_random)%(2**32)
             index = (digit/(2**32)) * 1000000
         
             digit_result = py_numbers[int(index)] #selectionne le digit dans les decimales de pi a l'index index
