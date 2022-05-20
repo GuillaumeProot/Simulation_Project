@@ -35,13 +35,22 @@ if __name__ == '__main__':
 
     print(gen_numbers_1)
 
+    randomgen3 = Generator3()
+    gen_numbers_3 = [randomgen3.random() for _ in range(2000)]
+
+    print(gen_numbers_1)
+    print("---------------------------------------")
+    print(gen_numbers_3)
+
     print(f"Test de Kolmogorov-Smirnov pour notre générateur : \n"
         f"1 --> {kolmogorov_smirnov(gen_numbers_1)} \n"
+        f"3 --> {kolmogorov_smirnov(gen_numbers_3)} \n"
         f"Python --> {kolmogorov_smirnov(pyth_numbers)}")
 
     
     plt.figure()
     plt.hist(gen_numbers_1, color='palegreen', histtype='barstacked')
+    plt.hist(gen_numbers_3, color='gold', histtype='barstacked')
     plt.hist(pyth_numbers, color='darkblue', histtype='step')
     plt.legend({'Premier générateur', 'Python'}, loc=4)
     plt.savefig('generator1.png')
