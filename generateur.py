@@ -1,5 +1,7 @@
 import random
 from generators import *
+from main import *
+from scipy.stats import chisquare
 from matplotlib import pyplot as plt
 import math
 import numpy as np
@@ -15,7 +17,34 @@ def open_file():
                 yield int(c)
 
 
-
+def gap_test(seq, a=0, b=1/2):
+    G = [1 if a <= seq[i] <= b else 0 for i in range(len(seq))]
+    p = b - a
+    # count the 0s
+    l = 0
+    lengths = {}
+    expected = []
+    for g in G:
+        if g == 1:
+            if l not in lengths:
+                lengths[l] = 1
+                if l >= 11:
+                    expected.append(np.power(1-p, 11))
+                else:
+                    expected.append(p * np.power(1-p, l))
+            else:
+                lengths[l] += 1
+            l = 0
+        else:
+            l = min(l+1, 11)
+        
+    plt.bar(lengths.keys(), lengths.values())
+    plt.show()
+    # n_gap = sum(lengths.values())
+    # pj = { j : j*(((1-p)**2)*(p**j)) for j in lengths.keys()}
+    K_r = compute_kr(list(lengths.values()), expected)
+    pvalue = chi2.cdf(K_r, df=n_gap)
+    return K_r, pvalue
 
 def kolmogorov_smirnov_uniform_test(numbers):
     """
@@ -56,7 +85,7 @@ if __name__ == '__main__':
 
     randomgen3 = Generator3()
     gen_numbers_3 = [randomgen3.random() for _ in range(2000)]
-
+    
     
     print(gen_numbers_3)
     print("---------------------------------------")
@@ -69,19 +98,25 @@ if __name__ == '__main__':
         f"Python --> {kolmogorov_smirnov_uniform_test(pyth_numbers)}")
 
     
-    plt.figure()
-    plt.hist(gen_numbers_1, color='palegreen', histtype='barstacked')
-    plt.hist(pyth_numbers, color='darkblue', histtype='step')
-    plt.legend({'Premier générateur','Python'}, loc=4)
-    plt.savefig('generator1.png')
-    plt.show()
+    print(f"Test de gap pour notre générateur : \n"
+        f"1      --> {gap_test(gen_numbers_1)} \n"
+        f"2      --> {gap_test(gen_numbers_2)} \n"
+        f"3      --> {gap_test(gen_numbers_3)} \n"
+        f"Python --> {gap_test(pyth_numbers)}")
+    
+    # plt.figure()
+    # plt.hist(gen_numbers_1, color='palegreen', histtype='barstacked')
+    # plt.hist(pyth_numbers, color='darkblue', histtype='step')
+    # plt.legend({'Premier générateur','Python'}, loc=4)
+    # plt.savefig('generator1.png')
+    # plt.show()
 
-    plt.figure()
-    plt.hist(gen_numbers_2, color='palegreen', histtype='barstacked')
-    plt.hist(pyth_numbers, color='darkblue', histtype='step')
-    plt.legend({'deuxième générateur','Python'}, loc=4)
-    plt.savefig('generator2.png')
-    plt.show()
+    # plt.figure()
+    # plt.hist(gen_numbers_2, color='palegreen', histtype='barstacked')
+    # plt.hist(pyth_numbers, color='darkblue', histtype='step')
+    # plt.legend({'deuxième générateur','Python'}, loc=4)
+    # plt.savefig('generator2.png')
+    # plt.show()
 
     plt.figure()
     plt.hist(gen_numbers_3, color='gold', histtype='barstacked')
@@ -89,4 +124,3 @@ if __name__ == '__main__':
     plt.legend({'Troisième générateur','Python'}, loc=4)
     plt.savefig('generator3.png')
     plt.show()
-    
