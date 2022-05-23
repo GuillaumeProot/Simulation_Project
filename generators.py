@@ -69,3 +69,22 @@ class Generator3:
         return float("0." + "".join(map(lambda x: str(x), digits)))
 
 
+class Generator4:
+    
+    def __init__(self, nb_digits=10):
+        self.nb_digits = nb_digits
+
+    def random(self):
+        digits = []
+
+        for i in range(self.nb_digits):
+            seed = datetime.datetime.now().microsecond
+            index = self.hash(seed, i) % len(py_numbers)
+            digits.append(py_numbers[index])
+        return float("0." + "".join(map(lambda x: str(x), digits)))
+
+    def hash(self, seed, i, c1=3, c2=5, m=3079):
+        return (self.first_hash(seed) + c1*i + c2*np.power(i, 2)) % m
+    
+    def first_hash(self, seed, m=1543):
+        return seed % m
