@@ -41,6 +41,10 @@ def count(tab):
     return c
 
 def poker_test(seq, d, k):
+    """
+    seq : the sequence of number we want to test the uniformity
+    d : 10 for pi decimals
+    """
     # cut the seq in package of size k
     r = []
     j = 0
