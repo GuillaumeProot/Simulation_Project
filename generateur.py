@@ -3,6 +3,7 @@ from generators import *
 from matplotlib import pyplot as plt
 import math
 import numpy as np
+import datetime
 
 def open_file():
     with open("pi.txt", "r") as pi:
@@ -16,13 +17,24 @@ def open_file():
 
 
 
-def kolmogorov_smirnov(numbers):
-    numbers = np.sort(numbers)
-    n = len(numbers)
-    distance = np.max(np.array([np.abs((i/n)-numbers[i]) for i in range(len(numbers))]))
-    critical = (0.410/math.sqrt(n))
-    return distance < critical, distance, critical
-
+def kolmogorov_smirnov_uniform_test(numbers):
+    """
+    Kolmogorov-Smirnov test for uniform distribution
+    """
+    size = len(numbers)
+    # get the cdf of the sample
+    sample_cdf = np.cumsum(numbers) / size
+    # get the cdf of the uniform distribution
+    uniform_cdf = np.arange(size) / size
+    # get the distance between the two cdf
+    d = np.max(np.abs(sample_cdf - uniform_cdf))
+    # get the critical value
+    critical_value = math.sqrt(1.36 * (1 / 2000))
+    # test if the distance is greater than the critical value
+    if d > critical_value:
+        return "The sample is not uniformly distributed"
+    else:
+        return "The sample is uniformly distributed"
 
 
 if __name__ == '__main__':
@@ -33,23 +45,28 @@ if __name__ == '__main__':
     randomgen1 = Generator1(50)
     gen_numbers_1 = [randomgen1.random() for _ in range(2000)]
 
-    randomgen2 = Generator3()
+    print(gen_numbers_1)
+    print("---------------------------------------")
+
+    randomgen2 = Generator2()
     gen_numbers_2 = [randomgen2.random() for _ in range(2000)]
+
+    print(gen_numbers_2)
+    print("---------------------------------------")
 
     randomgen3 = Generator3()
     gen_numbers_3 = [randomgen3.random() for _ in range(2000)]
 
-    print(gen_numbers_1)
-    print("---------------------------------------")
-    print(gen_numbers_2)
-    print("---------------------------------------")
+    
     print(gen_numbers_3)
-
+    print("---------------------------------------")
+    
+    
     print(f"Test de Kolmogorov-Smirnov pour notre générateur : \n"
-        f"1 --> {kolmogorov_smirnov(gen_numbers_1)} \n"
-        f"2 --> {kolmogorov_smirnov(gen_numbers_2)} \n"
-        f"3 --> {kolmogorov_smirnov(gen_numbers_3)} \n"
-        f"Python --> {kolmogorov_smirnov(pyth_numbers)}")
+        f"1 --> {kolmogorov_smirnov_uniform_test(gen_numbers_1)} \n"
+        f"2 --> {kolmogorov_smirnov_uniform_test(gen_numbers_2)} \n"
+        f"3 --> {kolmogorov_smirnov_uniform_test(gen_numbers_3)} \n"
+        f"Python --> {kolmogorov_smirnov_uniform_test(pyth_numbers)}")
 
     
     plt.figure()
@@ -72,3 +89,4 @@ if __name__ == '__main__':
     plt.legend({'Troisième générateur','Python'}, loc=4)
     plt.savefig('generator3.png')
     plt.show()
+    
