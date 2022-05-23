@@ -75,7 +75,7 @@ def poker_test(seq, d, k):
     [print(f"ACCEPT with a pvalue of {pval}") if kr <= pvalues[pval] else print(f"REJECT with a pvalue of {pval}") for pval in pvalues.keys()]
     p = chi2.cdf(kr, df=d-1)
     print(f"pvalue : {chi2.cdf(kr, df=degree)}")
-    [print(f"ACCEPT at {pval}") if p < float(pval) else print(f"REJECT at {pval}") for pval in pvalues.keys()]
+    [print(f"ACCEPT at {pval}") if p < 1-float(pval) else print(f"REJECT at {1-float(pval)}") for pval in pvalues.keys()]
     
 
 def compute_kr(values, expected):
