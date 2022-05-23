@@ -43,7 +43,7 @@ def count(tab):
 def poker_test(seq, d, k):
     """
     seq : the sequence of number we want to test the uniformity
-    d : 10 for pi decimals
+    d   : 
     """
     # cut the seq in package of size k
     r = []
@@ -66,25 +66,26 @@ def poker_test(seq, d, k):
     plt.show()
 
     # Kr number
-    kr = compute_kr(r_tab, poker_prob_tab)
-    print(f"Kr : {kr}")
     degree = d-1
-    # TODO : help, I don't know what to trust here
+    test, kr, crit = compute_kr(r_tab, poker_prob_tab, degree)
+    print(f"Kr : {kr}")
     print(f"Freedom degree : {degree}")
     pvalues = {"0.1" : 14.684,
                "0.05" : 16.919,
                "0.01" : 21.666,
                "0.001" : 27.877}
-    print("HYPOTHESIS : digits of pi are uniformly distributed")
-    [print(f"ACCEPT with a pvalue of {pval}") if kr <= pvalues[pval] else print(f"REJECT with a pvalue of {pval}") for pval in pvalues.keys()]
     p = chi2.cdf(kr, df=d-1)
     print(f"pvalue : {chi2.cdf(kr, df=degree)}")
     [print(f"ACCEPT at {pval}") if p < 1-float(pval) else print(f"REJECT at {1-float(pval)}") for pval in pvalues.keys()]
     
 
-def compute_kr(values, expected):
+def compute_kr(values, expected, df=None):
+    df = len(values)-1 if df == None else df
     Np = np.multiply(expected, np.sum(values))
-    return np.sum(np.divide(np.power(np.subtract(values, Np), 2), Np))
+    Kr = np.sum(np.divide(np.power(np.subtract(values, Np), 2), Np))
+    crit = chi2.ppf(q=0.95, df=df)
+    return Kr <= crit, Kr, crit
+
 
 def get_pi_seq():
     file = open('pi.txt', "r")
