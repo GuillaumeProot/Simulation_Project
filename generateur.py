@@ -18,14 +18,14 @@ def open_file():
 
 
 def gap_test(seq, a=0, b=1/2):
-    G = [1 if a <= seq[i] <= b else 0 for i in range(len(seq))]
     p = b - a
     # count the 0s
     l = 0
+    n_gaps = 0
     lengths = {}
     expected = []
-    for g in G:
-        if g == 1:
+    for val in seq:
+        if a <= val <= b:
             if l not in lengths:
                 lengths[l] = 1
                 if l >= 11:
@@ -34,17 +34,15 @@ def gap_test(seq, a=0, b=1/2):
                     expected.append(p * np.power(1-p, l))
             else:
                 lengths[l] += 1
+            n_gaps += 1
             l = 0
         else:
             l = min(l+1, 11)
         
-    plt.bar(lengths.keys(), lengths.values())
-    plt.show()
-    # n_gap = sum(lengths.values())
-    # pj = { j : j*(((1-p)**2)*(p**j)) for j in lengths.keys()}
-    K_r = compute_kr(list(lengths.values()), expected)
-    pvalue = chi2.cdf(K_r, df=n_gap)
-    return K_r, pvalue
+    # plt.bar(lengths.keys(), lengths.values())
+    # plt.show()
+    test, K_r, crit = compute_kr(list(lengths.values()), expected)
+    return test, K_r, crit
 
 def kolmogorov_smirnov_uniform_test(numbers):
     """
@@ -74,27 +72,33 @@ if __name__ == '__main__':
     randomgen1 = Generator1(50)
     gen_numbers_1 = [randomgen1.random() for _ in range(2000)]
 
-    print(gen_numbers_1)
-    print("---------------------------------------")
+    # print(gen_numbers_1)
+    # print("---------------------------------------")
 
     randomgen2 = Generator2()
     gen_numbers_2 = [randomgen2.random() for _ in range(2000)]
 
-    print(gen_numbers_2)
-    print("---------------------------------------")
+    # print(gen_numbers_2)
+    # print("---------------------------------------")
 
     randomgen3 = Generator3()
     gen_numbers_3 = [randomgen3.random() for _ in range(2000)]
     
     
-    print(gen_numbers_3)
-    print("---------------------------------------")
+    # print(gen_numbers_3)
+    # print("---------------------------------------")
     
+    randomgen4 = Generator4()
+    gen_numbers_4 = [randomgen4.random() for _ in range(2000)]
+    
+    # print(gen_numbers_4)
+    # print("---------------------------------------")
     
     print(f"Test de Kolmogorov-Smirnov pour notre générateur : \n"
-        f"1 --> {kolmogorov_smirnov_uniform_test(gen_numbers_1)} \n"
-        f"2 --> {kolmogorov_smirnov_uniform_test(gen_numbers_2)} \n"
-        f"3 --> {kolmogorov_smirnov_uniform_test(gen_numbers_3)} \n"
+        f"1      --> {kolmogorov_smirnov_uniform_test(gen_numbers_1)} \n"
+        f"2      --> {kolmogorov_smirnov_uniform_test(gen_numbers_2)} \n"
+        f"3      --> {kolmogorov_smirnov_uniform_test(gen_numbers_3)} \n"
+        f"4      --> {kolmogorov_smirnov_uniform_test(gen_numbers_4)} \n"
         f"Python --> {kolmogorov_smirnov_uniform_test(pyth_numbers)}")
 
     
@@ -102,6 +106,7 @@ if __name__ == '__main__':
         f"1      --> {gap_test(gen_numbers_1)} \n"
         f"2      --> {gap_test(gen_numbers_2)} \n"
         f"3      --> {gap_test(gen_numbers_3)} \n"
+        f"4      --> {gap_test(gen_numbers_4)} \n"
         f"Python --> {gap_test(pyth_numbers)}")
     
     # plt.figure()
@@ -118,9 +123,16 @@ if __name__ == '__main__':
     # plt.savefig('generator2.png')
     # plt.show()
 
+    # plt.figure()
+    # plt.hist(gen_numbers_3, color='gold', histtype='barstacked')
+    # plt.hist(pyth_numbers, color='darkblue', histtype='step')
+    # plt.legend({'Troisième générateur','Python'}, loc=4)
+    # plt.savefig('generator3.png')
+    # plt.show()
+
     plt.figure()
-    plt.hist(gen_numbers_3, color='gold', histtype='barstacked')
+    plt.hist(gen_numbers_4, color='green', histtype='barstacked')
     plt.hist(pyth_numbers, color='darkblue', histtype='step')
-    plt.legend({'Troisième générateur','Python'}, loc=4)
-    plt.savefig('generator3.png')
+    plt.legend({'Quatrième générateur','Python'}, loc=4)
+    # plt.savefig('generator4.png')
     plt.show()
