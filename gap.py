@@ -1,14 +1,18 @@
 from collections import Counter
+from ctypes import ArgumentError
 from chi2 import *
 import numpy as np
 
 
-def gap_test(seq, a=0, b=1/2):
-    p = b - a
+def gap_test(seq, a=0, b=1/2, pi=False):
+    if a > b:
+        raise ArgumentError(f"Error : must have a < b!")
+    b = 0.9 if (pi and b>0.9) else b
+    p = np.floor(10*b)/10 - np.ceil(10*a)/10 + 0.1 if pi else b-a 
     gaps = []                   # len of all gaps
     gap_size = 0
     for val in seq:
-        if a <= val <= b:
+        if (not pi and a <= val <= b) or (pi and a <= val/10 <= b):
             gaps.append(gap_size if gap_size < 10 else 10)
             gap_size = 0
         else:
