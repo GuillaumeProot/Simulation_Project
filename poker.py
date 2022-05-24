@@ -54,9 +54,9 @@ def poker_test(d, k):
 
     # plot the repartition of the 'poker values'
     absiss = list(digits_count.keys())
-    plt.title(f"Poker test with {k} splits")
-    plt.xlabel("Number of different digits by splits")
-    plt.ylabel("Number of splits")
+    plt.title(f"Test de poker avec {k} splits")
+    plt.xlabel("Nombre de digit différent par split")
+    plt.ylabel("Nombre de splits")
     plt.bar(absiss, r_tab)
     plt.show()
 
@@ -64,14 +64,7 @@ def poker_test(d, k):
     degree = d-1
     kr = chi2_test(r_tab, poker_prob_tab, degree)
     print(f"Kr : {kr}")
-    print(f"Freedom degree : {degree}")
-    # pvalues = {"0.1" : 14.684,
-    #            "0.05" : 16.919,
-    #            "0.01" : 21.666,
-    #            "0.001" : 27.877}
-    # p = chi2.cdf(kr, df=d-1)
-    # print(f"pvalue : {chi2.cdf(kr, df=degree)}")
-    # [print(f"ACCEPT at {pval}") if p < 1-float(pval) else print(f"REJECT at {1-float(pval)}") for pval in pvalues.keys()]
+    print(f"Degré de liberté : {degree}")
     
 
 def get_pi_seq():

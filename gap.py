@@ -28,6 +28,12 @@ def gap_test(seq, a=0, b=1/2, pi=False):
             # why ? Because the probability becomes really small
             
     kr = chi2_test(list(gap_lengths.values()), lr_probs)
+    if pi:
+        plt.title("Occurence des gaps de longueur r dans les décimales de pi")
+    else:
+        plt.title("Occurence des gaps de longueur r")
+    plt.xlabel("Longueurs des gaps (ceux où r>10 sont regroupé dans 11)")
+    plt.ylabel("Nombre de gaps de longeur r")
     plt.bar(gap_lengths.keys(), gap_lengths.values())
     plt.show()
     return kr
