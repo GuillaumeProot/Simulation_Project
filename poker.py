@@ -1,19 +1,8 @@
 from collections import Counter
-from math import sqrt
 import matplotlib.pyplot as plt
-import scipy as sc
 from scipy.stats import chisquare
-from scipy.stats import chi2
 import numpy as np
-    
-def get_pi_seq():
-    file = open('pi.txt', "r")
-    lines = file.readlines()[1:]
-    clean_lines = [l.strip() for l in lines]
-    str_line = "".join(clean_lines)
-    return [int(x) for x in str_line]
-
-
+from chi2 import chi2_test
 
 def computeStirling(k, r, pred={}):
     """
@@ -39,7 +28,6 @@ def poker_case_prob(k, r, d):
     return (computeStirling(k, r) * np.prod([d-i for i in range(r)])) / (d**k)
 
 
-
 def poker_test(d, k):
     """
     seq : the sequence of number we want to test the uniformity
@@ -55,6 +43,12 @@ def poker_test(d, k):
         r.append(len(Counter(seq[j:j+k])))
         j += k
     digits_count = Counter(r)   # count occurences of each value
+    while j+k < len(seq):       # this is the most efficient way to do it
+        # count occurences in a package
+        # add the number of different value to r
+        r.append(len(count(seq[j:j+k])))
+        j += k
+    digits_count = count(r)   # count occurences of each value
     r_tab = list(digits_count.values()) # poker value (pair, full, etc)
     poker_prob_tab = [poker_case_prob(k, r, d) for r in digits_count]
 
@@ -68,25 +62,24 @@ def poker_test(d, k):
 
     # Kr number
     degree = d-1
-    test, kr, crit = compute_kr(r_tab, poker_prob_tab, degree)
+    kr = chi2_test(r_tab, poker_prob_tab, degree)
     print(f"Kr : {kr}")
     print(f"Freedom degree : {degree}")
-    pvalues = {"0.1" : 14.684,
-               "0.05" : 16.919,
-               "0.01" : 21.666,
-               "0.001" : 27.877}
-    p = chi2.cdf(kr, df=d-1)
-    print(f"pvalue : {chi2.cdf(kr, df=degree)}")
-    [print(f"ACCEPT at {pval}") if p < 1-float(pval) else print(f"REJECT at {1-float(pval)}") for pval in pvalues.keys()]
+    # pvalues = {"0.1" : 14.684,
+    #            "0.05" : 16.919,
+    #            "0.01" : 21.666,
+    #            "0.001" : 27.877}
+    # p = chi2.cdf(kr, df=d-1)
+    # print(f"pvalue : {chi2.cdf(kr, df=degree)}")
+    # [print(f"ACCEPT at {pval}") if p < 1-float(pval) else print(f"REJECT at {1-float(pval)}") for pval in pvalues.keys()]
+    
 
-def compute_kr(values, expected, df=None):
-    df = len(values)-1 if df == None else df
-    Np = np.multiply(expected, np.sum(values))
-    Kr = np.sum(np.divide(np.power(np.subtract(values, Np), 2), Np))
-    crit = chi2.ppf(q=0.95, df=df)
-    return Kr <= crit, Kr, crit
-
-
+def get_pi_seq():
+    file = open('pi.txt', "r")
+    lines = file.readlines()[1:]
+    clean_lines = [l.strip() for l in lines]
+    str_line = "".join(clean_lines)
+    return [int(x) for x in str_line]
 
 def pi_chisquare_test():
     """
