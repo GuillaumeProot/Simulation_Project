@@ -25,7 +25,6 @@ def cls():
     os.system('cls' if os.name =='nt' else 'clear')
 
 def main():
-    cls()
     pi_numbers = np.array(list(open_file()))
     print("\n#############################")
     print("#############################")
@@ -200,4 +199,5 @@ if __name__ == '__main__':
     print("##################################")
     print("loading...\n")
     sleep(2)
+    cls()
     main()
