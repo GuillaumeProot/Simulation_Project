@@ -19,30 +19,32 @@ def open_file():
 
 def gap_test(seq, a=0, b=1/2):
     p = b - a
-    # count the 0s
-    l = 0
-    n_gaps = 0
-    lengths = {}
-    expected = []
+    gaps = []                   # len of all gaps
+    gap_size = 0
     for val in seq:
         if a <= val <= b:
-            if l not in lengths:
-                lengths[l] = 1
-                if l >= 11:
-                    expected.append(np.power(1-p, 11))
-                else:
-                    expected.append(p * np.power(1-p, l))
-            else:
-                lengths[l] += 1
-            n_gaps += 1
-            l = 0
+            gaps.append(gap_size if gap_size < 10 else 10)
+            gap_size = 0
         else:
-            l = min(l+1, 11)
-        
+            gap_size += 1
+    count_of_gap_size = Counter(gaps) # count the occurence of each gap size
+    # now we compute the proba for each gap size to happen
+    lr_prob = {}
+    for size in count_of_gap_size.keys():
+        if size < 10:
+            lr_prob[size] = np.power(1-p, size)*p
+        else:
+            lr_prob[10] = np.power(1-p, size+1)
+    
+    deg = len(lr_prob)-1
+    kr = compute_kr(list(count_of_gap_size.values()),
+                                list(lr_prob.values()),
+                                deg)
     # plt.bar(lengths.keys(), lengths.values())
     # plt.show()
-    test, K_r, crit = compute_kr(list(lengths.values()), expected)
-    return test, K_r, crit
+    return kr
+
+   
 
 def kolmogorov_smirnov_uniform_test(numbers):
     """
@@ -102,12 +104,22 @@ if __name__ == '__main__':
         f"Python --> {kolmogorov_smirnov_uniform_test(pyth_numbers)}")
 
     
-    print(f"Test de gap pour notre générateur : \n"
-        f"1      --> {gap_test(gen_numbers_1)} \n"
-        f"2      --> {gap_test(gen_numbers_2)} \n"
-        f"3      --> {gap_test(gen_numbers_3)} \n"
-        f"4      --> {gap_test(gen_numbers_4)} \n"
-        f"Python --> {gap_test(pyth_numbers)}")
+    print(f"Test de gap pour notre générateur :")
+    print(f"1      -------")
+    gap_test(gen_numbers_1)
+    print("-------")
+    print(f"2      -------")
+    gap_test(gen_numbers_2)
+    print("-------")
+    print(f"3      -------")
+    gap_test(gen_numbers_3)
+    print("-------")
+    print(f"4      -------")
+    gap_test(gen_numbers_4)
+    print("-------")
+    print(f"python -------")
+    gap_test(pyth_numbers)
+    print("-------")
     
     # plt.figure()
     # plt.hist(gen_numbers_1, color='palegreen', histtype='barstacked')
@@ -130,9 +142,9 @@ if __name__ == '__main__':
     # plt.savefig('generator3.png')
     # plt.show()
 
-    plt.figure()
-    plt.hist(gen_numbers_4, color='green', histtype='barstacked')
-    plt.hist(pyth_numbers, color='darkblue', histtype='step')
-    plt.legend({'Quatrième générateur','Python'}, loc=4)
+    # plt.figure()
+    # plt.hist(gen_numbers_4, color='paleblue', histtype='barstacked')
+    # plt.hist(pyth_numbers, color='darkblue', histtype='step')
+    # plt.legend({'Quatrième générateur','Python'}, loc=4)
     # plt.savefig('generator4.png')
-    plt.show()
+    # plt.show()

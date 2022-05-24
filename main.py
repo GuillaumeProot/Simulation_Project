@@ -67,24 +67,31 @@ def poker_test(seq, d, k):
 
     # Kr number
     degree = d-1
-    test, kr, crit = compute_kr(r_tab, poker_prob_tab, degree)
+    kr = compute_kr(r_tab, poker_prob_tab, degree)
     print(f"Kr : {kr}")
     print(f"Freedom degree : {degree}")
-    pvalues = {"0.1" : 14.684,
-               "0.05" : 16.919,
-               "0.01" : 21.666,
-               "0.001" : 27.877}
-    p = chi2.cdf(kr, df=d-1)
-    print(f"pvalue : {chi2.cdf(kr, df=degree)}")
-    [print(f"ACCEPT at {pval}") if p < 1-float(pval) else print(f"REJECT at {1-float(pval)}") for pval in pvalues.keys()]
+    # pvalues = {"0.1" : 14.684,
+    #            "0.05" : 16.919,
+    #            "0.01" : 21.666,
+    #            "0.001" : 27.877}
+    # p = chi2.cdf(kr, df=d-1)
+    # print(f"pvalue : {chi2.cdf(kr, df=degree)}")
+    # [print(f"ACCEPT at {pval}") if p < 1-float(pval) else print(f"REJECT at {1-float(pval)}") for pval in pvalues.keys()]
     
 
-def compute_kr(values, expected, df=None):
+def compute_kr(values, expected, df=None, pvalues=[0.1, 0.05, 0.01, 0.001]):
     df = len(values)-1 if df == None else df
     Np = np.multiply(expected, np.sum(values))
     Kr = np.sum(np.divide(np.power(np.subtract(values, Np), 2), Np))
-    crit = chi2.ppf(q=0.95, df=df)
-    return Kr <= crit, Kr, crit
+    # crit = chi2.ppf(q=pvalue, df=df)
+    [print(f"ACCEPT at {p : <6}% | {Kr : ^6.5f} <= {chi2.ppf(q=1-p, df=df) : ^7.5f} | df = {df}") if Kr <= chi2.ppf(q=1-p, df=df) else print(f"REJECT at {p : < 6}% | {Kr : ^6.5f} <= {chi2.ppf(q=1-p, df=df) : ^7.5f} | df = {df}") for p in pvalues]
+    # NOTE :
+    # si Kr >= à chi2.ppf(1-p)
+    # ça veut dire qu'on avait p% de chance d'être dans ce cas là
+    # et ça veut dire que c'est pas uniforme
+    # Si Kr <= à chi2.ppf(1-p)
+    # ça veut dire qu'on est uniforme et qu'on a que p% de chance de se tromper
+    return Kr
 
 
 def get_pi_seq():
