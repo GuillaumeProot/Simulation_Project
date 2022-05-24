@@ -1,3 +1,5 @@
+import math
+
 def kolmogorov_smirnov_uniform_test(numbers):
     """
     Kolmogorov-Smirnov test for uniform distribution

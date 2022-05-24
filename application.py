@@ -2,7 +2,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 from generators import *
-from kolmogorov_smirnov import *
+from kolmogorov_smirnov import kolmogorov_smirnov_uniform_test
+from poker import poker_test
 
 
 def open_file():
@@ -24,6 +25,9 @@ def main():
                       "3. Tests sur les générateurs \n"
                       "4. Quitter \n"))
 
+    #############################################################################################################
+    #############################################################################################################
+
     if choix == 1:
         print(f"pi = {pi_numbers[:1000000]} \n")
         pi_labels, pi_counts = np.unique(pi_numbers, return_counts=True)
@@ -37,8 +41,28 @@ def main():
         plt.show()
         main()
 
+    #############################################################################################################
+    #############################################################################################################
+
     elif choix == 2:
-        pass
+
+        choix_test = int(input("Choisissez le test: \n"
+                               "1. Test de Poker sur Pi \n"
+                               "2. Test de Gap sur Pi \n"
+                               "3. Retour \n"))
+
+        if choix_test == 1 :
+
+            k = int(input("Entrez le nombre de paquets : "))
+            poker_test(10, k)
+            main()
+        elif choix_test == 2:
+            pass
+        else:
+            main()
+
+    #############################################################################################################
+    #############################################################################################################
 
     elif choix == 3:
         pyth_numbers = []
@@ -69,10 +93,10 @@ def main():
                                "3. Retour \n"))
         if choix_test == 1:
             print(f"Test de Kolmogorov-Smirnov pour notre générateur : \n"
-                  f"1er generateur --> {kolmogorov_smirnov.kolmogorov_smirnov_uniform_test(gen_numbers_1)} \n"
-                  f"2ieme generateur --> {kolmogorov_smirnov.kolmogorov_smirnov_uniform_test(gen_numbers_2)} \n"
-                  f"3ieme generateur --> {kolmogorov_smirnov.kolmogorov_smirnov_uniform_test(gen_numbers_3)} \n"
-                  f"Python --> {kolmogorov_smirnov.kolmogorov_smirnov_uniform_test(pyth_numbers)}")
+                  f"1er generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_1)} \n"
+                  f"2ieme generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_2)} \n"
+                  f"3ieme generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_3)} \n"
+                  f"Python --> {kolmogorov_smirnov_uniform_test(pyth_numbers)}")
 
             plt.figure()
             plt.hist(gen_numbers_1, color='palegreen', histtype='barstacked')
@@ -101,7 +125,8 @@ def main():
             pass
         elif choix_test == 3:
             main()
-
+    #############################################################################################################
+    #############################################################################################################
     else:
         quit()
 
