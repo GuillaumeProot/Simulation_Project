@@ -4,8 +4,8 @@ import os
 import atexit
 from generators import *
 from kolmogorov_smirnov import kolmogorov_smirnov_uniform_test
-from poker import poker_test
-
+from poker import get_pi_seq, poker_test
+from gap import gap_test
 
 def open_file():
     with open("pi.txt", "r") as pi:
@@ -67,7 +67,10 @@ def main():
             print("\n \n \n \n \n")
             main()
         elif choix_test == 2:
-            pass
+            a = float(input("Choisissez un a dans [0;1[ : "))
+            b = float(input("Choisissez un b dans [0;1[ : "))
+            gap_test(get_pi_seq(), a, b, True)
+            main()
         else:
             cls()
             main()

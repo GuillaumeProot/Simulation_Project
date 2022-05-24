@@ -1,6 +1,6 @@
 import random
 from generators import *
-from main import *
+from poker import *
 from scipy.stats import chisquare
 from matplotlib import pyplot as plt
 from gap import gap_test
