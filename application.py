@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+from time import sleep
 import numpy as np
 import os
 import atexit
@@ -24,7 +25,18 @@ def cls():
     os.system('cls' if os.name =='nt' else 'clear')
 
 def main():
+    cls()
     pi_numbers = np.array(list(open_file()))
+    print("\n#############################")
+    print("#############################")
+    print("#    ## #####  ##    # #    #")
+    print("##  ##  #      # #   # #    #")
+    print("# ## #  #####  #  #  # #    #")
+    print("#    #  #      #   # # #    #")
+    print("#    #  #####  #    ##  #### ")
+    print("#############################")
+    print("#############################\n\n")
+    
     print(f"Etude du caractère pseudo-aléatoire des décimales de pi par des tests vus au cours \n")
     choix = int(input("Choisissez l'action: \n"
                       "1. Information sur pi \n"
@@ -80,34 +92,35 @@ def main():
 
     elif choix == 3:
         cls()
+        print("Génération de 2000 nombres pour les tests...")
         pyth_numbers = []
         for _ in range(2000):
             pyth_numbers.append(random.uniform(0, 1))
-
+        print(f"{'Python' : <20} {'..........' : ^10} {'OK' : >3}")
         randomgen1 = Generator1(50)
         gen_numbers_1 = [randomgen1.random() for _ in range(2000)]
-
-        print(gen_numbers_1)
-        print("---------------------------------------")
+        print(f"{'1er générateur' : <20} {'..........' : ^10} {'OK' : >3}")
+        # print(gen_numbers_1)
+        # print("---------------------------------------")
 
         randomgen2 = Generator2()
         gen_numbers_2 = [randomgen2.random() for _ in range(2000)]
-
-        print(gen_numbers_2)
-        print("---------------------------------------")
+        print(f"{'2ieme générateur' : <20} {'..........' : ^10} {'OK' : >3}")
+        # print(gen_numbers_2)
+        # print("---------------------------------------")
 
         randomgen3 = Generator3()
         gen_numbers_3 = [randomgen3.random() for _ in range(2000)]
-
-        print(gen_numbers_3)
-        print("---------------------------------------")
+        print(f"{'3ieme générateur' : <20} {'..........' : ^10} {'OK' : >3}")
+        # print(gen_numbers_3)
+        # print("---------------------------------------")
 
         choix_test = int(input("Choisissez le test: \n"
                                "1. Test de kolmogorov-smirnov uniforme sur les générateurs \n"
                                "2. Test du Gap sur les générateurs \n"
                                "3. Retour \n"))
         if choix_test == 1:
-            print(f"Test de Kolmogorov-Smirnov pour notre générateur : \n"
+            print(f"Test de Kolmogorov-Smirnov pour nos générateurs : \n"
                   f"1er generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_1)} \n"
                   f"2ieme generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_2)} \n"
                   f"3ieme generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_3)} \n"
@@ -137,7 +150,24 @@ def main():
             main()
 
         elif choix_test == 2:
-            pass
+            a = float(input("Choisissez un a dans [0;1[ : "))
+            b = float(input("Choisissez un b dans [0;1[ : "))
+            print("\nTest de gap pour nos générateurs :")
+            print(f"-------<<<==== {'1er générateur' : ^20} ====>>>>-------")
+            gap_test(gen_numbers_1, a, b)
+            print(f"<<<====-------{'-'.join(['' for _ in range(24)])}-------====>>>\n")
+            print(f"-------<<<==== {'2ieme générateur' : ^20} ====>>>>-------")
+            gap_test(gen_numbers_2, a, b)
+            print(f"<<<====-------{'-'.join(['' for _ in range(24)])}--------====>>>\n")
+            print(f"-------<<<==== {'3ieme générateur' : ^20} ====>>>>-------")
+            gap_test(gen_numbers_3, a, b)
+            print(f"<<<====-------{'-'.join(['' for _ in range(24)])}-------====>>>\n")
+            print(f"-------<<<==== {'Python' : ^20} ====>>>>-------")
+            gap_test(pyth_numbers, a, b)
+            print(f"<<<====-------{'-'.join(['' for _ in range(24)])}-------====>>>\n")
+            print("\n\n\n")
+            main()
+            
         elif choix_test == 3:
             cls()
             main()
@@ -159,7 +189,7 @@ def main():
 
 if __name__ == '__main__':
     os.system('cls' if os.name =='nt' else 'clear')
-    print("##################################")
+    print("\n##################################")
     print("##################################")
     print("#    #  #####  #      #      #####")
     print("#    #  #      #      #      #   #")
@@ -168,4 +198,6 @@ if __name__ == '__main__':
     print("#    #  #####  #####  #####  #####")
     print("##################################")
     print("##################################")
+    print("loading...\n")
+    sleep(2)
     main()
