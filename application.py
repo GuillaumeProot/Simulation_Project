@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
-
+import os
+import atexit
 from generators import *
 from kolmogorov_smirnov import kolmogorov_smirnov_uniform_test
 from poker import poker_test
@@ -14,7 +15,13 @@ def open_file():
                 line = line.split(".")[1]
             for c in line:
                 yield int(c)
+def cls():
 
+    """ 
+    fonction de nettoyage d ecran
+    """
+
+    os.system('cls' if os.name =='nt' else 'clear')
 
 def main():
     pi_numbers = np.array(list(open_file()))
@@ -29,6 +36,7 @@ def main():
     #############################################################################################################
 
     if choix == 1:
+        cls()
         print(f"pi = {pi_numbers[:1000000]} \n")
         pi_labels, pi_counts = np.unique(pi_numbers, return_counts=True)
         print(f"Les chiffres apparaissant dans les décimales :\n"
@@ -39,13 +47,14 @@ def main():
         plt.bar(pi_labels, pi_counts, color='palegreen')
         plt.savefig('histo_exp.png')
         plt.show()
+        print("\n \n \n \n \n")
         main()
 
     #############################################################################################################
     #############################################################################################################
 
     elif choix == 2:
-
+        cls()
         choix_test = int(input("Choisissez le test: \n"
                                "1. Test de Poker sur Pi \n"
                                "2. Test de Gap sur Pi \n"
@@ -55,16 +64,19 @@ def main():
 
             k = int(input("Entrez le nombre de paquets : "))
             poker_test(10, k)
+            print("\n \n \n \n \n")
             main()
         elif choix_test == 2:
             pass
         else:
+            cls()
             main()
 
     #############################################################################################################
     #############################################################################################################
 
     elif choix == 3:
+        cls()
         pyth_numbers = []
         for _ in range(2000):
             pyth_numbers.append(random.uniform(0, 1))
@@ -118,17 +130,39 @@ def main():
             plt.legend({'Troisième générateur', 'Python'}, loc=4)
             plt.savefig('generator3.png')
             plt.show()
-
+            print("\n \n \n \n \n")
             main()
 
         elif choix_test == 2:
             pass
         elif choix_test == 3:
+            cls()
             main()
     #############################################################################################################
     #############################################################################################################
     else:
+        cls()
+        print("###############################################")
+        print("###############################################")
+        print("##### #####  #####  ####   ####   #    #  #####")
+        print("#     #   #  #   #  #   #  #   #   #  #   #    ")
+        print("#  ## #   #  #   #  #   #  ####     ##    #####")
+        print("#  #  #   #  #   #  #   #  #   #    ##    #    ")
+        print("####  #####  #####  ####   ####     ##    #####")
+        print("###############################################")
+        print("###############################################")
+        print("\n \n \n \n")
         quit()
 
 if __name__ == '__main__':
+    os.system('cls' if os.name =='nt' else 'clear')
+    print("##################################")
+    print("##################################")
+    print("#    #  #####  #      #      #####")
+    print("#    #  #      #      #      #   #")
+    print("######  #####  #      #      #   #")
+    print("#    #  #      #      #      #   #")
+    print("#    #  #####  #####  #####  #####")
+    print("##################################")
+    print("##################################")
     main()
