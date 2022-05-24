@@ -46,9 +46,9 @@ def poker_test(d, k):
     while j+k < len(seq):       # this is the most efficient way to do it
         # count occurences in a package
         # add the number of different value to r
-        r.append(len(count(seq[j:j+k])))
+        r.append(len(Counter(seq[j:j+k])))
         j += k
-    digits_count = count(r)   # count occurences of each value
+    digits_count = Counter(r)   # count occurences of each value
     r_tab = list(digits_count.values()) # poker value (pair, full, etc)
     poker_prob_tab = [poker_case_prob(k, r, d) for r in digits_count]
 
