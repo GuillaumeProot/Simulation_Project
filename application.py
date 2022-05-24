@@ -52,7 +52,7 @@ def main():
         pi_labels, pi_counts = np.unique(pi_numbers, return_counts=True)
         print(f"Les chiffres apparaissant dans les décimales :\n"
               f"{pi_labels}\n")
-        print(f"Leur fréquences d\'apparition : \n"
+        print(f"Leurs fréquences d\'apparition : \n"
               f"{pi_counts}")
         plt.figure()
         plt.bar(pi_labels, pi_counts, color='palegreen')
@@ -72,16 +72,20 @@ def main():
                                "3. Retour \n"))
 
         if choix_test == 1 :
-
             k = int(input("Entrez le nombre de paquets : "))
             poker_test(10, k)
             print("\n \n \n \n \n")
             main()
+        
+
         elif choix_test == 2:
             a = float(input("Choisissez un a dans [0;1[ : "))
             b = float(input("Choisissez un b dans [0;1[ : "))
             gap_test(get_pi_seq(), a, b, True)
+            print("\n \n \n \n \n")
             main()
+        
+
         else:
             cls()
             main()
@@ -96,33 +100,39 @@ def main():
         for _ in range(2000):
             pyth_numbers.append(random.uniform(0, 1))
         print(f"{'Python' : <20} {'..........' : ^10} {'OK' : >3}")
+        
         randomgen1 = Generator1(50)
         gen_numbers_1 = [randomgen1.random() for _ in range(2000)]
         print(f"{'1er générateur' : <20} {'..........' : ^10} {'OK' : >3}")
-        # print(gen_numbers_1)
-        # print("---------------------------------------")
+
 
         randomgen2 = Generator2()
         gen_numbers_2 = [randomgen2.random() for _ in range(2000)]
         print(f"{'2ieme générateur' : <20} {'..........' : ^10} {'OK' : >3}")
-        # print(gen_numbers_2)
-        # print("---------------------------------------")
+
 
         randomgen3 = Generator3()
         gen_numbers_3 = [randomgen3.random() for _ in range(2000)]
         print(f"{'3ieme générateur' : <20} {'..........' : ^10} {'OK' : >3}")
-        # print(gen_numbers_3)
-        # print("---------------------------------------")
+
+
+        randomgen4 = Generator4()
+        gen_numbers_4 = [randomgen4.random() for _ in range(2000)]
+        print(f"{'4ieme générateur' : <20} {'..........' : ^10} {'OK' : >3}")
+
 
         choix_test = int(input("Choisissez le test: \n"
                                "1. Test de kolmogorov-smirnov uniforme sur les générateurs \n"
                                "2. Test du Gap sur les générateurs \n"
                                "3. Retour \n"))
+        
+
         if choix_test == 1:
             print(f"Test de Kolmogorov-Smirnov pour nos générateurs : \n"
                   f"1er generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_1)} \n"
                   f"2ieme generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_2)} \n"
                   f"3ieme generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_3)} \n"
+                  f"4ieme generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_4)} \n"
                   f"Python --> {kolmogorov_smirnov_uniform_test(pyth_numbers)}")
 
             plt.figure()
@@ -145,6 +155,14 @@ def main():
             plt.legend({'Troisième générateur', 'Python'}, loc=4)
             plt.savefig('generator3.png')
             plt.show()
+
+            plt.figure()
+            plt.hist(gen_numbers_4, color='plum', histtype='barstacked')
+            plt.hist(pyth_numbers, color='darkblue', histtype='step')
+            plt.legend({'Quatrième générateur', 'Python'}, loc=4)
+            plt.savefig('generator4.png')
+            plt.show()
+
             print("\n \n \n \n \n")
             main()
 
@@ -161,10 +179,13 @@ def main():
             print(f"-------<<<==== {'3ieme générateur' : ^20} ====>>>>-------")
             gap_test(gen_numbers_3, a, b)
             print(f"<<<====-------{'-'.join(['' for _ in range(24)])}-------====>>>\n")
+            print(f"-------<<<==== {'4ieme générateur' : ^20} ====>>>>-------")
+            gap_test(gen_numbers_4, a, b)
+            print(f"<<<====-------{'-'.join(['' for _ in range(24)])}-------====>>>\n")
             print(f"-------<<<==== {'Python' : ^20} ====>>>>-------")
             gap_test(pyth_numbers, a, b)
             print(f"<<<====-------{'-'.join(['' for _ in range(24)])}-------====>>>\n")
-            print("\n\n\n")
+            print("\n \n \n \n \n")
             main()
             
         elif choix_test == 3:
@@ -183,7 +204,7 @@ def main():
         print("####  #####  #####  ####   ####     ##    #####")
         print("###############################################")
         print("###############################################")
-        print("\n \n \n \n")
+        print("\n \n \n \n \n")
         quit()
 
 if __name__ == '__main__':
