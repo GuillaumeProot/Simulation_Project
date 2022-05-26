@@ -36,11 +36,11 @@ class Generator2:
         digits = []
         for i in range(self.nb_digits):
             time.sleep(1E-6)
-            timing = datetime.datetime.now().microsecond #prend la date en microseconde
+            timing = datetime.datetime.now().microsecond # takes the date in microseconds
             digit = (timing*424242)%(2**32)
             index = (digit/(2**32)) * 1000000
         
-            digit_result = py_numbers[int(index)] #selectionne le digit dans les decimales de pi a l'index index
+            digit_result = py_numbers[int(index)] # selects the digit in the decimals of pi at the index
             digits.append(digit_result)
         return float("0." + "".join(map(lambda x: str(x), digits)))
 
@@ -64,7 +64,7 @@ class Generator3:
 
             index = (sum(asc) % 1000000)
 
-            digit_result = py_numbers[int(index)] #selectionne le digit dans les decimales de pi a l'index index
+            digit_result = py_numbers[int(index)] # selects the digit in the decimals of pi at the index
             digits.append(digit_result)
         return float("0." + "".join(map(lambda x: str(x), digits)))
 

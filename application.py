@@ -10,7 +10,7 @@ from gap import gap_test
 
 def open_file():
 	"""
-	Ouverture et lecture du fichier
+	opening and reading the file
 	"""
     with open("pi.txt", "r") as pi:
         for line in pi:
@@ -22,7 +22,7 @@ def open_file():
 def cls():
 
     """ 
-    fonction de nettoyage d ecran
+    screen cleaning function
     """
 
     os.system('cls' if os.name =='nt' else 'clear')
@@ -49,7 +49,7 @@ def main():
     #############################################################################################################
     #############################################################################################################
 
-    if choix == 1: # information sur pi
+    if choix == 1: # information on pi
         cls()
         print(f"pi = {pi_numbers[:1000000]} \n")
         pi_labels, pi_counts = np.unique(pi_numbers, return_counts=True)
@@ -67,21 +67,21 @@ def main():
     #############################################################################################################
     #############################################################################################################
 
-    elif choix == 2: # tests sur les décimales de pi
+    elif choix == 2: # tests on the decimals of pi
         cls()
         choix_test = int(input("Choisissez le test: \n"
                                "1. Test de Poker sur Pi \n"
                                "2. Test de Gap sur Pi \n"
                                "3. Retour \n"))
 
-        if choix_test == 1 : # test de Poker
+        if choix_test == 1 : # Poker test
             k = int(input("Entrez le nombre de paquets : "))
             poker_test(10, k)
             print("\n \n \n \n \n")
             main()
         
 
-        elif choix_test == 2: # test de Gap
+        elif choix_test == 2: # Gap test
             a = float(input("Choisissez un a dans [0;1[ : "))
             b = float(input("Choisissez un b dans [0;1[ : "))
             gap_test(get_pi_seq(), a, b, True)
@@ -89,14 +89,14 @@ def main():
             main()
         
 
-        else: # retour menu principal
+        else: # back to main menu
             cls()
             main()
 
     #############################################################################################################
     #############################################################################################################
 
-    elif choix == 3: # test sur les générateurs
+    elif choix == 3: # generators test
         cls()
         print("Génération de 2000 nombres pour les tests...")
         pyth_numbers = []
@@ -130,7 +130,7 @@ def main():
                                "3. Retour \n"))
         
 
-        if choix_test == 1: # test de kolmogorov-smirnov
+        if choix_test == 1: # kolmogorov-smirnov test
             print(f"Test de Kolmogorov-Smirnov pour nos générateurs : \n"
                   f"1er generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_1)} \n"
                   f"2ieme generateur --> {kolmogorov_smirnov_uniform_test(gen_numbers_2)} \n"
@@ -169,7 +169,7 @@ def main():
             print("\n \n \n \n \n")
             main()
 
-        elif choix_test == 2: # test de Gap
+        elif choix_test == 2: # Gap test
             a = float(input("Choisissez un a dans [0;1[ : "))
             b = float(input("Choisissez un b dans [0;1[ : "))
             print("\nTest de gap pour nos générateurs :")
@@ -191,7 +191,7 @@ def main():
             print("\n \n \n \n \n")
             main()
             
-        elif choix_test == 3: # retour au menu
+        elif choix_test == 3: # back to menu
             cls()
             main()
     #############################################################################################################
