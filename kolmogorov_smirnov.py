@@ -3,8 +3,8 @@ import math
 def kolmogorov_smirnov_uniform_test(numbers):
     """
     Kolmogorov-Smirnov test for uniform distribution
-    :param numbers: list of numbers
-    :return: p-value
+    param : numbers list of Pi's decimals 
+    return: p-value
     """
     n = len(numbers)
     # Compute the empirical distribution
